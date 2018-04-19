@@ -1,6 +1,8 @@
 from operator import add, mul
 identity = lambda x: x
 square = lambda x: x * x
+odd = lambda x: x % 2 != 0
+greater_than_5 = lambda x: x > 5
 
 def accumulate(combiner, base, n, term):
 	""" Return the result of combining the first n terms in a sequence and base. 
@@ -33,5 +35,15 @@ def filtered_accumulate(combiner, base, pred, n, term):
 		base combiner v1 combiner v2 ... combiner vk
 	(treating combiner as it were a binary operator, like +). The
 	implementation uses accumulate. """
-	if pred(n) == False:
-		accumulate()
+	if n == 0 and base >= 1:
+		return base
+	elif n == 1 and base == 0:
+		return term(n)
+	if n == 1 and base == 1:
+		return n
+	if pred(term(n)) == True:
+		return combiner(term(n), filtered_accumulate(combiner, base, pred,n-1, term))
+	elif pred(base) == True:
+		return term(base)
+	else:
+		return filtered_accumulate(combiner, base, pred, n-1, term)
