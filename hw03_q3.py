@@ -47,3 +47,18 @@ def filtered_accumulate(combiner, base, pred, n, term):
 		return term(base)
 	else:
 		return filtered_accumulate(combiner, base, pred, n-1, term)
+
+def make_repeater(term, n):
+	""" Return the function that computes the nth application of f. """
+	def repeat(x, n=n, term = term):
+		if n == 1:
+			return term(x)
+		elif n == 0:
+			return x
+		else:
+			return term(repeat(x, n-1))
+
+	return repeat
+
+triple = lambda x: x *3
+
